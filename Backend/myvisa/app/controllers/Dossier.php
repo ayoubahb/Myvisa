@@ -118,7 +118,7 @@
       $this->dossierModel->token         = $token;
 
       if ($this->dossierModel->create()) {
-        echo json_encode(array('message' => 'Dossier created'));
+        echo json_encode(array('message' => 'Dossier created','token' => $token));
       }else{
         echo json_encode(array('message' => 'Dossier Not created'));
       }
