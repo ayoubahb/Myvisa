@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+			crossorigin="anonymous"
+		/>
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="container">
+			<form id="form">
+				<div class="row">
+					<div class="mb-3 col-6">
+						<label class="form-label">First Name</label>
+						<input type="text" class="form-control" name="first_name" />
+					</div>
+					<div class="mb-3 col-6">
+						<label class="form-label">Last Name</label>
+						<input type="text" class="form-control" name="last_name" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="mb-3 col-6">
+						<label class="form-label">Date of birth</label>
+						<input type="date" class="form-control" name="birthday" />
+					</div>
+					<div class="mb-3 col-6">
+						<label class="form-label">Nationality</label>
+						<input type="text" class="form-control" name="nationalite" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="mb-3 col-6">
+						<label class="form-label">Familial Situation</label>
+						<select class="form-select" name="situation">
+							<option value="">Select an option</option>
+							<option value="single">Single</option>
+							<option value="married">Married</option>
+							<option value="divorced">Divorced</option>
+							<option value="widowed">Widowed</option>
+							<option value="other">Other</option>
+						</select>
+					</div>
+					<div class="mb-3 col-6">
+						<label class="form-label">Adresse</label>
+						<input type="text" class="form-control" name="adresse" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="mb-3 col">
+						<label class="form-label">Visa type</label>
+						<select name="type_visa" class="form-select">
+							<option value="">Select an option</option>
+							<option value="tourist">Tourist visa</option>
+							<option value="work">Work visa</option>
+							<option value="student">Student visa</option>
+							<option value="residence">Residence visa</option>
+							<option value="artist_athlete">Artist/Athlete visa</option>
+							<option value="diplomatic">Diplomatic visa</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="mb-3 col-6">
+						<label class="form-label">Departure date</label>
+						<input type="date" class="form-control" name="date_depart" />
+					</div>
+					<div class="mb-3 col-6">
+						<label class="form-label">Arrival date</label>
+						<input type="date" class="form-control" name="date_arriver" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="mb-3 col-6">
+						<label class="form-label">Type of document</label>
+						<select class="form-select" name="type_document">
+							<option value="">Select an option</option>
+							<option value="PASSPORT">Passport</option>
+							<option value="CIN">CIN</option>
+						</select>
+					</div>
+					<div class="mb-3 col-6">
+						<label class="form-label">N° document</label>
+						<input type="text" class="form-control" name="num_document" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="mb-3 col-6">
+						<button type="button" class="btn btn-primary w-100">Cancle</button>
+					</div>
+					<div class="mb-3 col-6">
+						<button type="submit" class="btn btn-primary w-100">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+    <script src="./js/main.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>
