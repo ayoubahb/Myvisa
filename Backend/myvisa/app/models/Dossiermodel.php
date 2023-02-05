@@ -18,6 +18,7 @@ class Dossiermodel {
   public $date_arriver;
   public $num_document;
   public $type_document;
+  public $token;
 
   // Constructor with DB
   public function __construct() {
@@ -66,11 +67,12 @@ class Dossiermodel {
     $this->date_arriver  = $row['date_arriver'];
     $this->num_document  = $row['num_document'];
     $this->type_document = $row['type_document'];
+    $this->token         = $row['token'];
   }
   //create a dossier
   public function create(){
     //Create query
-    $query = 'INSERT INTO '. $this->table .' (first_name, last_name, birthday, nationalite, situation, adresse, type_visa, date_depart, date_arriver, num_document, type_document) VALUES (:first_name,:last_name,:birthday,:nationalite,:situation,:adresse,:type_visa,:date_depart,:date_arriver,:num_document,:type_document);';
+    $query = 'INSERT INTO '. $this->table .' (first_name, last_name, birthday, nationalite, situation, adresse, type_visa, date_depart, date_arriver, num_document, type_document, token) VALUES (:first_name,:last_name,:birthday,:nationalite,:situation,:adresse,:type_visa,:date_depart,:date_arriver,:num_document,:type_document,:token);';
     
     // Prepare statement
     $stmt = $this->conn->prepare($query);
@@ -88,6 +90,7 @@ class Dossiermodel {
     $stmt->bindParam(':date_arriver',$this->date_arriver);
     $stmt->bindParam(':num_document',$this->num_document);
     $stmt->bindParam(':type_document',$this->type_document);
+    $stmt->bindParam(':token',$this->token);
 
     //Execute query
 
@@ -172,6 +175,16 @@ class Dossiermodel {
     printf("Error : %s.\n",$stmt->error);
 
     return false;
+  }
+
+  public function tokenExist($token) {
+    $stmt = $this->conn->prepare("SELECT token FROM ". $this->table ." WHERE token = :token");
+    $stmt->execute(array(':token' => $token));
+    if ($stmt->rowCount() > 0) {
+        return true;
+    } else {
+        return false;
+    }
   }
 }
 

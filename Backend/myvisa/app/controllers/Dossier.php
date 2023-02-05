@@ -35,6 +35,7 @@
             'date_arriver'   => $date_arriver,
             'num_document'   => $num_document,
             'type_document'  => $type_document,
+            'token'          => $token,
           );
 
           //Push to data
@@ -75,6 +76,7 @@
         'date_arriver'   => $this->dossierModel->date_arriver,
         'num_document'   => $this->dossierModel->num_document,
         'type_document'  => $this->dossierModel->type_document,
+        'token'          => $this->dossierModel->token,
       );
 
       
@@ -92,6 +94,15 @@
 
       $data = json_decode(file_get_contents("php://input"));
 
+      $tokenExists = true;
+      while ($tokenExists) {
+        $token = sprintf( '%04x%04x%04x',
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+            mt_rand( 0, 0xffff )
+        );
+        $tokenExists = $this->dossierModel->tokenExist($token);
+      }
+
 
       $this->dossierModel->first_name    = $data->first_name;
       $this->dossierModel->last_name     = $data->last_name;
@@ -104,6 +115,7 @@
       $this->dossierModel->date_arriver  = $data->date_arriver;
       $this->dossierModel->num_document  = $data->num_document;
       $this->dossierModel->type_document = $data->type_document;
+      $this->dossierModel->token         = $token;
 
       if ($this->dossierModel->create()) {
         echo json_encode(array('message' => 'Dossier created'));
@@ -167,3 +179,4 @@
       }
     }
   }
+
