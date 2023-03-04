@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="container">
     <h3 class="text-center my-5">Please fill out the form below to continue</h3>
@@ -105,6 +106,13 @@
           />
         </div>
       </div>
+      <p class="mb-4">Please select an available time</p>
+      <!-- calendar component -->
+      <CalendarComp
+        @time-selected="handleTimeSelected"
+        :selected-time="selectedTime"
+        :selected-date="selectedDate"
+      />
       <div class="row">
         <div class="mb-3 col-6">
           <button type="button" class="w-100">Cancle</button>
@@ -119,9 +127,13 @@
 
 <script>
 import axios from "axios";
+import CalendarComp from "@/components/CalendarComp.vue";
 
 export default {
   name: "FormReserve",
+  components: {
+    CalendarComp,
+  },
   data() {
     return {
       formData: {
@@ -136,17 +148,30 @@ export default {
         date_arriver: "",
         num_document: "",
         type_document: "",
+        selectedTime: "",
+        time: null,
+        date: null,
       },
+      selectedTime: null,
+      selectedDate: null,
     };
   },
   methods: {
+    handleTimeSelected(data) {
+      this.selectedTime = data.time;
+      this.formData.time = data.time;
+      this.selectedDate = data.day;
+      this.formData.date = data.day;
+    },
     craeteDossier() {
       axios
-        .post("http://localhost/myvisa/dossier/create", this.formData)
+        .post("http://localhost/myvisa/dossier/create", this.formData, {
+          withCredentials: false,
+        })
         .then((response) => {
           if (response.status === 200) {
-            console.log(response.data.code);
             sessionStorage.setItem("token", response.data.code);
+            window.location.href = "/reservationPage";
           }
         })
         .catch((error) => console.log(error));

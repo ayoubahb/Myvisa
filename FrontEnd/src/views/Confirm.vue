@@ -18,7 +18,7 @@ export default {
     };
   },
   created() {
-    const tokenSession = sessionStorage.getItem("responseData");
+    const tokenSession = sessionStorage.getItem("token");
     if (tokenSession) {
       this.token = tokenSession;
     }

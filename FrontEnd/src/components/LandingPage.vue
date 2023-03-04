@@ -36,6 +36,7 @@ section {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  backdrop-filter: blur(100px);
   color: white;
   text-align: center;
 }

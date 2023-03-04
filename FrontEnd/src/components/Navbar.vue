@@ -19,12 +19,15 @@
         <ul class="navbar-nav">
           <li class="nav-item my-sm-2">
             <router-link to="/">Home</router-link>
+            <!-- <a href="/">Home</a> -->
           </li>
           <li class="nav-item my-sm-2">
             <router-link to="/Form">Reservation</router-link>
+            <!-- <a href="/Form">Reservation</a> -->
           </li>
           <li class="nav-item my-sm-2">
             <router-link to="/track">Track</router-link>
+            <!-- <a href="/track">Track</a> -->
           </li>
         </ul>
       </div>
