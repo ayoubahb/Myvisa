@@ -18,6 +18,8 @@ class Dossiermodel {
   public $date_arriver;
   public $num_document;
   public $type_document;
+  public $time;
+  public $date;
   public $token;
 
   // Constructor with DB
@@ -43,19 +45,20 @@ class Dossiermodel {
   //Get single dossier
   public function read_single(){
     // Create query
-    $query = 'SELECT * FROM ' . $this->table . ' WHERE id = ? LIMIT 0,1';
+    $query = 'SELECT * FROM ' . $this->table . ' WHERE token = ? LIMIT 0,1';
     // Prepare statement
     $stmt = $this->conn->prepare($query);
 
     //Bind Id
 
-    $stmt->bindParam(1,$this->id);
+    $stmt->bindParam(1,$this->token);
 
     // Execute query
     $stmt->execute();
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
+    $this->id            = $row['id'];
     $this->first_name    = $row['first_name'];
     $this->last_name     = $row['last_name'];
     $this->birthday      = $row['birthday'];
@@ -68,11 +71,13 @@ class Dossiermodel {
     $this->num_document  = $row['num_document'];
     $this->type_document = $row['type_document'];
     $this->token         = $row['token'];
+    $this->time         = $row['time'];
+    $this->date         = $row['date'];
   }
   //create a dossier
   public function create(){
     //Create query
-    $query = 'INSERT INTO '. $this->table .' (first_name, last_name, birthday, nationalite, situation, adresse, type_visa, date_depart, date_arriver, num_document, type_document, token) VALUES (:first_name,:last_name,:birthday,:nationalite,:situation,:adresse,:type_visa,:date_depart,:date_arriver,:num_document,:type_document,:token);';
+    $query = 'INSERT INTO '. $this->table . ' (first_name, last_name, birthday, nationalite, situation, adresse, type_visa, date_depart, date_arriver, num_document, type_document, time, date, token) VALUES (:first_name,:last_name,:birthday,:nationalite,:situation,:adresse,:type_visa,:date_depart,:date_arriver,:num_document,:type_document,:time,:date,:token);';
     
     // Prepare statement
     $stmt = $this->conn->prepare($query);
@@ -90,6 +95,8 @@ class Dossiermodel {
     $stmt->bindParam(':date_arriver',$this->date_arriver);
     $stmt->bindParam(':num_document',$this->num_document);
     $stmt->bindParam(':type_document',$this->type_document);
+    $stmt->bindParam(':time',$this->time);
+    $stmt->bindParam(':date',$this->date);
     $stmt->bindParam(':token',$this->token);
 
     //Execute query
@@ -119,14 +126,16 @@ class Dossiermodel {
               date_depart= :date_depart,
               date_arriver= :date_arriver,
               num_document= :num_document,
-              type_document= :type_document WHERE id = :id';
+              type_document= :type_document,
+              time = :time,
+              date= :date WHERE token = :token';
     
     // Prepare statement
     $stmt = $this->conn->prepare($query);
     
     //Bind params
 
-    $stmt->bindParam(':id',$this->id);
+    $stmt->bindParam(':token',$this->token);
     $stmt->bindParam(':first_name',$this->first_name);
     $stmt->bindParam(':last_name',$this->last_name);
     $stmt->bindParam(':birthday',$this->birthday);
@@ -138,6 +147,8 @@ class Dossiermodel {
     $stmt->bindParam(':date_arriver',$this->date_arriver);
     $stmt->bindParam(':num_document',$this->num_document);
     $stmt->bindParam(':type_document',$this->type_document);
+    $stmt->bindParam(':time',$this->time);
+    $stmt->bindParam(':date',$this->date);
 
     //Execute query
 
@@ -154,16 +165,16 @@ class Dossiermodel {
   //delete dossier
   public function delete(){
     //create query
-    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+    $query = 'DELETE FROM ' . $this->table . ' WHERE token = :token';
 
     // Prepare statement
     $stmt = $this->conn->prepare($query);
     
     //Clean data
-    $this->id = htmlspecialchars(strip_tags($this->id));
+    $this->token = htmlspecialchars(strip_tags($this->token));
 
     //Bind params
-    $stmt->bindParam(':id',$this->id);
+    $stmt->bindParam(':token',$this->token);
 
     //Execute query
 
@@ -185,6 +196,19 @@ class Dossiermodel {
     } else {
         return false;
     }
+  }
+
+  public function timeDate(){
+    // Create query
+    $query = 'SELECT time, date FROM ' . $this->table . ';';
+
+    // Prepare statement
+    $stmt = $this->conn->prepare($query);
+
+    // Execute query
+    $stmt->execute();
+
+    return $stmt;
   }
 }
 
