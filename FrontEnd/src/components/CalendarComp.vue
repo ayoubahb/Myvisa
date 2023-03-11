@@ -88,7 +88,7 @@ export default {
             { label: "15:15", value: "15:15" },
           ];
           if (this.dataFromDatabase && dateStr in this.dataFromDatabase) {
-            // Filter available times based on data from database
+            // Filter available times
             availableTimes = availableTimes.filter((time) => {
               return this.dataFromDatabase[dateStr].indexOf(time.value) === -1;
             });
@@ -97,8 +97,6 @@ export default {
           dateIndex++;
         }
       }
-      console.log(datesObj);
-
       return datesObj;
     },
   },

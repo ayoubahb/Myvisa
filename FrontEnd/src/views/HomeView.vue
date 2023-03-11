@@ -18,4 +18,5 @@ export default {
     Landing,
   },
 };
+sessionStorage.removeItem("token");
 </script>

@@ -115,12 +115,12 @@
       />
       <div class="row">
         <div class="mb-3 col-6">
-          <a href="/">
+          <a href="/reservationPage">
             <button type="button" class="w-100">Cancle</button>
           </a>
         </div>
         <div class="mb-3 col-6">
-          <button type="submit" class="w-100">Submit</button>
+          <button type="submit" class="w-100">Update</button>
         </div>
       </div>
     </form>
@@ -130,9 +130,11 @@
 <script>
 // import axios from "axios";
 import CalendarComp from "@/components/CalendarComp.vue";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default {
-  name: "UpdateForm",
+  name: "FormReserve",
   components: {
     CalendarComp,
   },
@@ -150,6 +152,7 @@ export default {
         date_arriver: "",
         num_document: "",
         type_document: "",
+        token: "",
         time: null,
         date: null,
       },
@@ -157,8 +160,33 @@ export default {
       selectedDate: null,
     };
   },
-
+  created() {
+    this.fetchUserData();
+  },
   methods: {
+    fetchUserData() {
+      const token = Cookies.get("token");
+      axios
+        .get(`http://localhost/myvisa/dossier/readSingle/${token}`)
+        .then((response) => {
+          this.formData.first_name = response.data.first_name;
+          this.formData.last_name = response.data.last_name;
+          this.formData.birthday = response.data.birthday;
+          this.formData.nationalite = response.data.nationalite;
+          this.formData.situation = response.data.situation;
+          this.formData.adresse = response.data.adresse;
+          this.formData.type_visa = response.data.type_visa;
+          this.formData.date_depart = response.data.date_depart;
+          this.formData.date_arriver = response.data.date_arriver;
+          this.formData.num_document = response.data.num_document;
+          this.formData.type_document = response.data.type_document;
+          this.formData.time = response.data.time;
+          this.formData.date = response.data.date;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     handleTimeSelected(data) {
       this.selectedTime = data.time;
       this.formData.time = data.time;
