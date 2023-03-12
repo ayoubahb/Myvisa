@@ -27,8 +27,6 @@ export default {
         `http://localhost/myvisa/dossier/readsingle/${token}`
       );
       next((vm) => {
-        console.log(response.data);
-
         vm.data = response.data;
       });
     } catch (error) {

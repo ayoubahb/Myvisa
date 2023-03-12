@@ -116,42 +116,48 @@ class Dossier extends Controller
 
   public function create()
   {
-
     $data = json_decode(file_get_contents("php://input"));
 
-    $tokenExists = true;
-    while ($tokenExists) {
-      $code = sprintf(
-        '%04x%04x%04x',
-        mt_rand(0, 0xffff),
-        mt_rand(0, 0xffff),
-        mt_rand(0, 0xffff)
-      );
-      $tokenExists = $this->dossierModel->tokenExist($code);
-    }
+    $validate = $this->validateInputs($data);
+
+    if (empty($validate)) {
+
+      $tokenExists = true;
+      while ($tokenExists) {
+        $code = sprintf(
+          '%04x%04x%04x',
+          mt_rand(0, 0xffff),
+          mt_rand(0, 0xffff),
+          mt_rand(0, 0xffff)
+        );
+        $tokenExists = $this->dossierModel->tokenExist($code);
+      }
 
 
-    $this->dossierModel->first_name    = $data->first_name;
-    $this->dossierModel->last_name     = $data->last_name;
-    $this->dossierModel->birthday      = $data->birthday;
-    $this->dossierModel->nationalite   = $data->nationalite;
-    $this->dossierModel->situation     = $data->situation;
-    $this->dossierModel->adresse       = $data->adresse;
-    $this->dossierModel->type_visa     = $data->type_visa;
-    $this->dossierModel->date_depart   = $data->date_depart;
-    $this->dossierModel->date_arriver  = $data->date_arriver;
-    $this->dossierModel->num_document  = $data->num_document;
-    $this->dossierModel->type_document = $data->type_document;
-    $this->dossierModel->type_document = $data->type_document;
-    $this->dossierModel->type_document = $data->type_document;
-    $this->dossierModel->time          = $data->time;
-    $this->dossierModel->date          = $data->date;
-    $this->dossierModel->token         = $code;
+      $this->dossierModel->first_name    = $data->first_name;
+      $this->dossierModel->last_name     = $data->last_name;
+      $this->dossierModel->birthday      = $data->birthday;
+      $this->dossierModel->nationalite   = $data->nationalite;
+      $this->dossierModel->situation     = $data->situation;
+      $this->dossierModel->adresse       = $data->adresse;
+      $this->dossierModel->type_visa     = $data->type_visa;
+      $this->dossierModel->date_depart   = $data->date_depart;
+      $this->dossierModel->date_arriver  = $data->date_arriver;
+      $this->dossierModel->num_document  = $data->num_document;
+      $this->dossierModel->type_document = $data->type_document;
+      $this->dossierModel->type_document = $data->type_document;
+      $this->dossierModel->type_document = $data->type_document;
+      $this->dossierModel->time          = $data->time;
+      $this->dossierModel->date          = $data->date;
+      $this->dossierModel->token         = $code;
 
-    if ($this->dossierModel->create()) {
-      echo json_encode(array('message' => 'Dossier created', 'code' => $code));
+      if ($this->dossierModel->create()) {
+        echo json_encode(array('message' => 'Dossier created', 'code' => $code));
+      } else {
+        echo json_encode(array('message' => 'Dossier Not created'));
+      }
     } else {
-      echo json_encode(array('message' => 'Dossier Not created'));
+      echo json_encode(array("message" => "Inputs Not Valide", "Validation" => $validate));
     }
   }
 
@@ -224,5 +230,20 @@ class Dossier extends Controller
   {
     $data = json_decode(file_get_contents("php://input"));
     echo json_encode($this->dossierModel->tokenExist($data->token));
+  }
+
+  public function validateInputs($data)
+  {
+    $errors = array();
+    foreach ($data as $name => $value) {
+      // Check if the input is empty
+      if (empty(trim($value))) {
+        $errors[$name] = "Cannot be empty";
+      } else if (!preg_match('/^[a-zA-Z0-9\-\:]+$/', $value)) {
+        $errors[$name] = "Cannot contain special characters";
+      }
+    }
+
+    return $errors;
   }
 }
